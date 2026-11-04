@@ -1,0 +1,15 @@
+# Track only reviewed scaffolding. Never add HA state, backups or secrets.
+*
+!.gitignore
+!README.md
+!datadog/
+datadog/*
+!datadog/compose.yaml
+!datadog/README.md
+!datadog/.env.example
+**/.env
+**/*.key
+**/*.pem
+**/*secret*
+**/*token*
+**/backups/**

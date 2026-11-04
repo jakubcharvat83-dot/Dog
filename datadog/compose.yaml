@@ -1,0 +1,19 @@
+services:
+  datadog-agent:
+    image: registry.datadoghq.com/agent:7
+    container_name: stroj-datadog-agent
+    restart: unless-stopped
+    cgroup: host
+    pid: host
+    environment:
+      DD_API_KEY: ${DD_API_KEY:?Set DD_API_KEY in a private .env file before starting}
+      DD_SITE: ${DD_SITE:-datadoghq.eu}
+      DD_ENV: stroj
+      DD_TAGS: 'project:stroj service:host-monitor'
+      DD_LOGS_ENABLED: 'false'
+      DD_APM_ENABLED: 'false'
+      DD_PROCESS_AGENT_ENABLED: 'false'
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /proc:/host/proc:ro
+      - /sys/fs/cgroup:/host/sys/fs/cgroup:ro
