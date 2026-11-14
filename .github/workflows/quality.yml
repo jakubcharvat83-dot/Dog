@@ -1,0 +1,39 @@
+name: STROJ repository quality gates
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: stroj-quality-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  repository-contract:
+    name: Public repo policy and template validation
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout (no persisted credentials)
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - name: Python 3.13
+        uses: actions/setup-python@v7
+        with:
+          python-version: '3.13'
+
+      - name: Run repository contract tests
+        run: python -m unittest discover -s tests -v
+
+      - name: Validate optional Datadog template (no start, no deploy)
+        env:
+          DD_API_KEY: CI_PLACEHOLDER_NO_REAL_CREDENTIAL
+        run: docker compose -f datadog/compose.yaml config --quiet
