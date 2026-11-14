@@ -1,15 +1,32 @@
-# Track only reviewed scaffolding. Never add HA state, backups or secrets.
+# PUBLIC scaffolding repository. Intentionally allowlist everything.
+# Real V6/V7 runtime config, archives and credentials must stay private.
 *
 !.gitignore
 !README.md
+!CONTRIBUTING.md
+!.github/
+!.github/workflows/
+!.github/workflows/quality.yml
+!.github/pull_request_template.md
+!docs/
+!docs/STROJ_V7_WORKFLOW.md
+!tests/
+!tests/test_repository_policy.py
 !datadog/
 datadog/*
 !datadog/compose.yaml
 !datadog/README.md
 !datadog/.env.example
+# Defense in depth, even if subdirectories are later allowed.
 **/.env
 **/*.key
 **/*.pem
 **/*secret*
 **/*token*
 **/backups/**
+**/*.db
+**/*.sqlite*
+**/*.zfo
+**/*.eml
+**/*.jsonl
+**/*.log
